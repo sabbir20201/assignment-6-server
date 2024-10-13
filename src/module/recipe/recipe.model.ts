@@ -1,6 +1,15 @@
 import { model, Schema } from "mongoose";
+import { TRecipe } from "./recipe.interface";
 
 const RecipeSchema = new Schema<TRecipe>({
+    // _id: {
+    //     type: String
+    // },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: false
+    },
     image: {
         type: String,
         required: true,

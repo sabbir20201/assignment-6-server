@@ -2,11 +2,15 @@ import { Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import httpStatus from "http-status";
 import { RecipeServices } from "./recipe.service";
+import { User } from "../user/user.model";
 
 
 const createRecipe = catchAsync(async (req: Request, res: Response) => {
     const recipeData = req.body;
-    const result = await RecipeServices.createRecipeIntoDB(recipeData)
+    const userEmail = (req as any).user?.email;
+    console.log('useremaul', userEmail);
+    
+    const result = await RecipeServices.createRecipeIntoDB(recipeData, userEmail)
     res.status(httpStatus.OK).json({
         success: true,
         statusCode: httpStatus.OK,
@@ -26,8 +30,23 @@ const getAllRecipe = catchAsync(async (req: Request, res: Response) => {
     })
 
 })
+const findARecipeById = catchAsync(async (req: Request, res: Response) => {
+
+    const id = req.params.id as string;
+    console.log('RECIPE ID=>', id);
+    const result = await RecipeServices.findARecipeByIdFromDB(id)
+    res.json({
+        success: true,
+        statusCode: 200,
+        message: "a single recipe got successfully",
+        data: result
+    })
+
+}
+)
 
 export const RecipeController = {
     createRecipe,
-    getAllRecipe
+    getAllRecipe,
+    findARecipeById
 }

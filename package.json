@@ -4,9 +4,11 @@
   "main": "./dist/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
     "start-dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.16",
     "@types/express": "^5.0.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -17,6 +19,7 @@
     "http-status": "^1.7.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.1",
+    "nodemailer": "^6.9.16",
     "zod": "^3.23.8"
   },
   "devDependencies": {

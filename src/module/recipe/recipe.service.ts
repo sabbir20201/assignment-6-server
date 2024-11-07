@@ -1,3 +1,5 @@
+import AppError from "../../errors/AppError"
+import { TComment } from "../comment/comment.interface"
 import { User } from "../user/user.model"
 import { TRecipe } from "./recipe.interface"
 import { Recipe } from "./recipe.model"
@@ -5,16 +7,19 @@ import { Recipe } from "./recipe.model"
 
 const createRecipeIntoDB = async (payload: TRecipe, userEmail: string) => {
     const user = await User.findOne({ email: userEmail })
-    console.log(user);
+    console.log('user from services', user);
 
     if (!user) {
         throw new Error("user not found")
     }
-    // const userID = (user as any)._id.toString()
+    const userID = (user as any)._id.toString()
     const recipeData = {
         ...payload,
-        user: user
+        user: userID
     }
+
+    // console.log('recipeData', recipeData, 'user', user);
+
     const result = await Recipe.create(recipeData)
     return result
 }
@@ -46,9 +51,11 @@ const getAllRecipeIntoDB = async () => {
         .exec();
     return result
 }
-const findARecipeByIdFromDB = async (payload: string) => {
+const findRecipeByIdFromDB = async (id: string) => {
     try {
-        const result = await Recipe.findOne({ _id: payload })
+   console.log('single recipe from services', id);
+        // const result = await Recipe.find({user: id})
+        const result = await Recipe.findOne({_id: id})
         return result
     } catch (error) {
         console.log(error);
@@ -56,8 +63,72 @@ const findARecipeByIdFromDB = async (payload: string) => {
     }
 }
 
+// const ratingRecipe = async (recipeId: string, userId: string, rating: number) => {
+//     const recipe = await Recipe.findById(recipeId);
+//     if (!recipe) {
+//         throw new AppError(404, 'recipe not found')
+//     }
+//     recipe.rating = ((recipe.rating * recipe.ratingCount) + rating) / (recipe.ratingCount + 1)
+//     recipe.ratingCount += 1;
+//     await recipe.save();
+//     return recipe
+// }
+
+
+// const getAllCommentIntoDB = async (recipeId: string, userId: string, CommentText: string) => {
+//     const recipe = await Recipe.findById(recipeId);
+//     if (!recipe) {
+//         throw new AppError(404, 'recipe not found')
+//     }
+//     recipe.comments?.push({ user: userId, comment: CommentText });
+//     await recipe.save();
+//     return recipe.comments;
+// }
+
+// const voteRecipeInToDB =  async(recipeId: string, userId: string, voteType: 'upVote' | 'downVote')=>{
+//     const recipe = await Recipe.findById(recipeId);
+//     if(!recipe){
+//         throw new AppError(404, '')
+//     }
+//     if(voteType === 'upVote'){
+//         recipe.upVotes.addToSet(userId)
+//         recipe.downVotes.pull(userId)
+//     }else{
+//         recipe.downVotes.addToSet(userId);
+//         recipe.upVotes.pull(userId);
+//     }
+//     await recipe.save();
+//     return {uupVotes: recipe.upVotes?.length, downVotes: recipe.downVotes?.length}
+// }
+const deleteRecipeServices = async (id: string) => {
+    try {
+        const result = await Recipe.deleteOne({_id: id})
+        console.log('result from service', result);
+
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+// const updateRecipeServicesById = async (id: string,payload: string) => {
+//     try {
+//         console.log('from service id',id);
+//         const updateComment = await Recipe.findByIdAndUpdate(id, payload, {
+//             new: true,
+//             runValidators: true
+//         })
+//         return updateComment
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+
 export const RecipeServices = {
     createRecipeIntoDB,
     getAllRecipeIntoDB,
-    findARecipeByIdFromDB
+    findRecipeByIdFromDB,
+    deleteRecipeServices,
+    // updateRecipeServicesById
+
 }

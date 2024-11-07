@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlobalErrorHandler = exports.globalErrorHandler = void 0;
 const zod_1 = require("zod");
@@ -6,6 +9,7 @@ const handleZodError_1 = require("../errors/handleZodError");
 const handleValidationError_1 = require("../errors/handleValidationError");
 const handleCastError_1 = require("../errors/handleCastError");
 const handledDuplicateError_1 = require("../errors/handledDuplicateError");
+const AppError_1 = __importDefault(require("../errors/AppError"));
 const globalErrorHandler = (err, req, res, next) => {
     let statusCode = 500;
     let message = err.message || 'something went wrong';
@@ -38,6 +42,10 @@ const globalErrorHandler = (err, req, res, next) => {
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorSource = simplifiedError.errorSource;
+    }
+    else if (err instanceof AppError_1.default) {
+        statusCode = err.statusCode;
+        message = err.message;
     }
     return res.status(statusCode).json({
         success: false,

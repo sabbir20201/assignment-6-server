@@ -26,6 +26,16 @@ const register = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, vo
         data: result
     });
 }));
+const getAllUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.getAllUserFromDB();
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'All User retrieve successfully',
+        data: result
+    });
+}));
 exports.UserController = {
-    register
+    register,
+    getAllUser
 };

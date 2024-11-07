@@ -2,9 +2,7 @@ import { model, Schema } from "mongoose";
 import { TRecipe } from "./recipe.interface";
 
 const RecipeSchema = new Schema<TRecipe>({
-    // _id: {
-    //     type: String
-    // },
+
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -35,7 +33,48 @@ const RecipeSchema = new Schema<TRecipe>({
     cookingTime: {
         type: String,
         required: true,
-    },
+    }
+   
 }, { timestamps: true });
 
 export const Recipe = model<TRecipe>('Recipe', RecipeSchema);
+
+
+// comments: [
+//     {
+//         user: {
+//             type: Schema.Types.ObjectId,
+//             ref: 'User',
+//         },
+//         comment: {
+//             type: String,
+         
+//         },
+//         createdAt: {
+//             type: Date,
+//             default: Date.now
+//         },
+//     }
+// ],
+// rating: {
+//     type: Number,
+//     default: 0
+// },
+// ratingCount: {
+//     type: Number,
+//     default: 0
+// },
+// upVotes: [
+//     {
+//         type:Schema.Types.ObjectId,
+//         ref: 'User',
+//     },
+
+// ],
+// downVotes: [
+//     {
+//         type:Schema.Types.ObjectId,
+//         ref: 'User',
+//     },
+
+// ],

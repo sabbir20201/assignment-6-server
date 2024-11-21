@@ -1,4 +1,4 @@
-import { USER_ROLE } from "./user.constant";
+import { USER_ROLE, USER_STATUS } from "./user.constant";
 
 export type TUser = {
     email: string;
@@ -6,6 +6,7 @@ export type TUser = {
     userName: string;
     profileImage?: string;
     role?: keyof typeof USER_ROLE;
+    status?:keyof typeof USER_STATUS;
     followers?: string[];
     following?: string[];
 

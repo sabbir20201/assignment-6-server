@@ -34,7 +34,7 @@ import { catchAsync } from "../../utils/catchAsync";
 const addCommentController = catchAsync(async (req: Request, res: Response) => {
     const payload = req?.body;
     const recipeId = req?.params.id;
-    const userId = req?.user._id;
+    const userId =( req as any)?.user._id;
 
     console.log('userId from comment 1', userId);
     

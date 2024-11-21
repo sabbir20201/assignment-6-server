@@ -19,7 +19,7 @@ const catchAsync_1 = require("../../utils/catchAsync");
 const login = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginData = req.body;
     const result = yield auth_service_1.AuthServices.userLoginFromDB(loginData);
-    console.log(result);
+    // console.log(result);
     const { refreshToken } = result;
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true
@@ -31,6 +31,44 @@ const login = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 
         data: result
     });
 }));
+const changedPassword = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const passwordData = req === null || req === void 0 ? void 0 : req.body;
+    const userId = req === null || req === void 0 ? void 0 : req.params.id;
+    console.log('password from body', passwordData, 'user ', userId);
+    const result = yield auth_service_1.AuthServices.changedPasswordFromDB(userId, passwordData);
+    console.log(result);
+    res.status(200).json({
+        statusCode: 200,
+        success: true,
+        message: 'password Updated successfully',
+        data: result,
+    });
+}));
+const updateUserInformation = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const userData = req.body;
+    const userId = req === null || req === void 0 ? void 0 : req.user;
+    console.log('user data from user update info', userId, userData);
+    const result = yield auth_service_1.AuthServices.updateUserInformationFromDB(userId, userData);
+    res.status(http_status_1.default.OK).json({
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'User updated successfully',
+        data: result
+    });
+}));
+// const forgetPassword = async (req: Request, res: Response) => {
+//     const id = req.body;
+//     const result = await AuthServices.forgetPasswordFromDB(id);
+//     res.status(httpStatus.OK).json({
+//         success: true,
+//         statusCode: httpStatus.OK,
+//         message: 'Reset Link generated successfully',
+//         data: result
+//     })
+// }
 exports.AuthController = {
-    login
+    login,
+    changedPassword,
+    updateUserInformation,
+    // forgetPassword
 };

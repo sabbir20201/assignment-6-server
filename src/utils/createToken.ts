@@ -1,10 +1,21 @@
 
 var jwt = require('jsonwebtoken');
-export interface jwtPayload {
+
+// export interface jwtPayload {
+//     email: string;
+//     role: 'ADMIN' | 'USER'
+// }
+
+export interface jwtPayloadType {
     email: string;
-    role: 'ADMIN' | 'USER'
+    // id: string;
+    userName: string;
+    role: string | undefined; 
+    // password:string,
+    // profileImage:string;
+
 }
-export const createToken = (payload:jwtPayload , secret: string, expireTime: string)=>{
+export const createToken = (payload:jwtPayloadType , secret: string, expireTime: string)=>{
     return jwt.sign(payload, secret, {
         expiresIn: expireTime
     })

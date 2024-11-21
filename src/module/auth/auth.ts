@@ -20,7 +20,7 @@ export const auth = (allowedRoles: string[]) => {
                 res.status(401).json({
                     success: false,
                     statusCode: 403,
-                    message: "you have no access this route"
+                    message: "you have no access verify this route"
                 })
                 return
             }

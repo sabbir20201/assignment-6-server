@@ -53,9 +53,16 @@ const getAllRecipeIntoDB = async () => {
 }
 const findRecipeByIdFromDB = async (id: string) => {
     try {
-   console.log('single recipe from services', id);
-        // const result = await Recipe.find({user: id})
         const result = await Recipe.findOne({_id: id})
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+const findRecipeByUserIdFromDB = async (id: string) => {
+    try {
+ 
+        const result = await Recipe.find({user: id})
         return result
     } catch (error) {
         console.log(error);
@@ -110,6 +117,16 @@ const deleteRecipeServices = async (id: string) => {
         console.log(error);
     }
 }
+const deleteRecipeServicesById = async (id: string) => {
+    try {
+        const result = await Recipe.deleteOne({_id: id})
+        console.log('result from service', result);
+
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
 // const updateRecipeServicesById = async (id: string,payload: string) => {
 //     try {
 //         console.log('from service id',id);
@@ -129,6 +146,8 @@ export const RecipeServices = {
     getAllRecipeIntoDB,
     findRecipeByIdFromDB,
     deleteRecipeServices,
+    findRecipeByUserIdFromDB,
+    deleteRecipeServicesById
     // updateRecipeServicesById
 
 }

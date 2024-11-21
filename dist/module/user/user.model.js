@@ -37,8 +37,22 @@ const UserModelSchema = new mongoose_1.Schema({
     },
     role: {
         type: String,
-        enum: Object.values(user_constant_1.USER_ROLE)
-    }
+        enum: Object.values(user_constant_1.USER_ROLE),
+    },
+    followers: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'User',
+            default: false
+        }
+    ],
+    following: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'User',
+            default: false
+        }
+    ],
 });
 UserModelSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -48,4 +62,11 @@ UserModelSchema.pre("save", function (next) {
         next();
     });
 });
+// UserModelSchema.static.isJwtIssuedBeforePasswordChanged = function(
+//     passwordChangedTimeStamp: number,
+//     jwtIssuedTimeStamp: number
+// ){
+//     const passwordChangedTime = new Date(passwordChangedTimeStamp).getTime() / 1000;
+//     return passwordChangedTime > jwtIssuedTimeStamp;
+// }
 exports.User = (0, mongoose_1.model)('User', UserModelSchema);

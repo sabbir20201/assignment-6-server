@@ -27,22 +27,27 @@ const getAllRecipe = catchAsync(async (req: Request, res: Response) => {
     })
 })
 const findRecipeById = catchAsync(async (req: Request, res: Response) => {
-
     const id = req.params.id as string;
-    console.log('id from single recipe', id);
-
     const result = await RecipeServices.findRecipeByIdFromDB(id)
-    // console.log('result => from', result);
-    
     res.json({
         success: true,
         statusCode: 200,
         message: "Single recipe getting successfully",
         data: result
     })
+})
+const findRecipeByUserId = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    console.log('user id single recipe', id);
+    const result = await RecipeServices.findRecipeByUserIdFromDB(id)
 
-}
-)
+    res.json({
+        success: true,
+        statusCode: 200,
+        message: "Single user's recipes retrieve successfully",
+        data: result
+    })
+})
 // const ratingRecipeController = catchAsync(async (req: Request, res: Response) => {
 
 //     const { recipeId, rating } = req.body;
@@ -74,11 +79,25 @@ const findRecipeById = catchAsync(async (req: Request, res: Response) => {
 // delete a recepi 
 const deleteRecipeController = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    console.log('id from delete', id);
+    
     const result = await RecipeServices.deleteRecipeServices(id)
     res.json({
         success: true,
         statusCode: 200,
-        message: "recipe deleted",
+        message: "Recipe deleted successfully",
+        data: result
+    })
+})
+const deleteRecipeControllerByAdmin = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    console.log('id from delete', id);
+    
+    const result = await RecipeServices.deleteRecipeServices(id)
+    res.json({
+        success: true,
+        statusCode: 200,
+        message: "Recipe deleted successfully by admin",
         data: result
     })
 })
@@ -104,5 +123,7 @@ export const RecipeController = {
     getAllRecipe,
     findRecipeById,
     deleteRecipeController,
+    findRecipeByUserId,
+    deleteRecipeControllerByAdmin
     // updateRecipeControllerById
 }

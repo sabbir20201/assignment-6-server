@@ -1,8 +1,8 @@
-import { create } from "domain";
+"use client"
 import { User } from "./user.model"
 import { TUser } from "./user.interface";
 import { USER_ROLE } from "./user.constant";
-import { createToken } from "../../utils/createToken";
+import { createToken, jwtPayloadType } from "../../utils/createToken";
 import config from "../../config";
 var jwt = require('jsonwebtoken');
 
@@ -14,16 +14,41 @@ const registerIntoDB = async (payload: TUser) => {
         throw new Error('User already exits')
     }
 
-    const jwtPayload = {
+    const jwtPayloadData = {
         email: payload.email,
         password: payload.password,
         userName: payload.userName,
         profileImage: payload.profileImage,
-        role: USER_ROLE.USER
+        role: USER_ROLE.ADMIN
     }
-    const accessToken = createToken(jwtPayload, config.jwt_access_secret as string, config.jwt_access_expire_in as string)
-    const refreshToken = jwt.sign(jwtPayload, config.jwt_refresh_secret, { expiresIn: config.jwt_refresh_expire_in })
-    await User.create(jwtPayload)
+    const accessToken = createToken(jwtPayloadData, config.jwt_access_secret as string, config.jwt_access_expire_in as string)
+    const refreshToken = jwt.sign(jwtPayloadData, config.jwt_refresh_secret, { expiresIn: config.jwt_refresh_expire_in })
+    await User.create(jwtPayloadData)
+
+    return {
+        accessToken,
+        refreshToken
+    }
+
+}
+const adminRegisterIntoDB = async (payload: TUser) => {
+    console.log('payload', payload);
+
+    const isUserExits = await User.findOne({ email: payload.email });
+    if (isUserExits) {
+        throw new Error('User already exits')
+    }
+
+    const jwtPayloadData = {
+        email: payload.email,
+        password: payload.password,
+        userName: payload.userName,
+        profileImage: payload.profileImage,
+        role: USER_ROLE.ADMIN
+    }
+    const accessToken = createToken(jwtPayloadData, config.jwt_access_secret as string, config.jwt_access_expire_in as string)
+    const refreshToken = jwt.sign(jwtPayloadData, config.jwt_refresh_secret, { expiresIn: config.jwt_refresh_expire_in })
+    await User.create(jwtPayloadData)
 
     return {
         accessToken,
@@ -76,12 +101,22 @@ const unFollowingInToDB = async (followingId: string, followersId: string) => {
         updatedUnFollowingUser
     }
 }
+const deleteUserServicesById = async (id: string) => {
+    try {
+        const result = await User.deleteOne({_id: id})
+        console.log('result from service', result);
 
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
 export const UserServices = {
     registerIntoDB,
     getAllUserFromDB,
     getSingleUserFromDB,
     followingInToDB,
-    unFollowingInToDB
-
+    unFollowingInToDB,
+    adminRegisterIntoDB,
+    deleteUserServicesById
 }

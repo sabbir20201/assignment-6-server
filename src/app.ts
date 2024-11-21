@@ -8,6 +8,7 @@ import { AuthRoutes } from "./module/auth/auth.routes"
 import { RecipeRoutes } from "./module/recipe/recipe.routes"
 import cookieParser from 'cookie-parser';
 import { CommentRoutes } from "./module/comment/comment.routes"
+import { RatingRoutes } from "./module/ratings/rating.routes"
 const app = express()
 app.use(cookieParser())
 app.use(cors({ 
@@ -21,6 +22,7 @@ app.use("/api/auth", UserRoutes)
 app.use("/api/auth", AuthRoutes)
 app.use("/api/recipe", RecipeRoutes)
 app.use("/api/recipe", CommentRoutes)
+app.use("/api/recipe", RatingRoutes)
 
 
 app.get('/', (req, res) => {

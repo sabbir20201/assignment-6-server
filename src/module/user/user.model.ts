@@ -3,7 +3,7 @@ import { TUser } from "./user.interface";
 import config from "../../config";
 import bcryptjs from 'bcryptjs';
 // import bcrypt from 'bcryptjs';
-import { USER_ROLE } from "./user.constant";
+import { USER_ROLE, USER_STATUS } from "./user.constant";
 
 const UserModelSchema = new Schema<TUser>({
     userName: {
@@ -25,6 +25,12 @@ const UserModelSchema = new Schema<TUser>({
     role: {
         type: String,
         enum: Object.values(USER_ROLE),
+    },
+    status: {
+        type: String,
+        enum: Object.values(USER_ROLE),
+        default: USER_STATUS.ACTIVE,
+        required: false
     },
     followers:
         [
